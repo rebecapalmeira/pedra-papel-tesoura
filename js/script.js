@@ -1,29 +1,44 @@
-let gamerChoice;
-let computerChoice;
-let computer = 0;
-let human = 0;
+let computerWins = 0;
+let gamerWins = 0;
 let round = 0;
-const placarFinal = 2;
+const rounds = 2;
 
 function startGame() {
     runRound();
+    if(playAgain()) {
+        restartCounters();
+        startGame();
+    }
 }       
 
 function hasWinner() {
-    if(human === placarFinal || computer === placarFinal) {
+    if(gamerWins === rounds || computerWins === rounds) {
         declareWinner();
-        round = 0;
         return true;
     }
 }
 
+function restartCounters() {
+    round = 0;
+    gamerWins = 0;
+    computerWins = 0;
+}
+
+function askForGamerChoice() {
+    return parseInt(prompt("Escolha uma das opções: [1] Pedra / [2] Papel / [3] Tesoura"), 10);
+}
+
+function playAgain() {
+    return confirm("Do you want to play again?");
+}
+
 function computerWin() {
-    computer++;
+    computerWins++;
     console.log(`Rodada ${round}: Vitória do computador`);
 }
 
 function gamerWin() {
-    human++;
+    gamerWins++;
     console.log(`Rodada ${round}: Vitória do jogador`);
 }
 
@@ -33,22 +48,16 @@ function draw() {
 }
 
 function showRoundResult() {
-    console.log(`PLACAR = Computador: ${computer} / Jogador: ${human}`);
+    console.log(`PLACAR = Computador: ${computerWins} / Jogador: ${gamerWins}`);
     console.log('---- **** ----')
 }
 
 function declareWinner() {
-    if(human > computer) console.log("GAME OVER - Vitória do jogador");
+    if(gamerWins > computerWins) console.log("GAME OVER - Vitória do jogador");
     else console.log("GAME OVER - Vitória da máquina");
 }
 
-function runRound() {
-    round++;
-    
-    gamerChoice = parseInt(prompt("Escolha uma das opções: [1] Pedra / [2] Papel / [3] Tesoura"), 10);
-    computerChoice = parseInt(Math.random()*3 + 1);
-    console.log(`Opção do Jogador: ${gamerChoice}\nOpção do Computador: ${computerChoice}`);
-    
+function determineRoundWinner(gamerChoice, computerChoice) {
     if(gamerChoice === computerChoice) {
         draw();
     } else {
@@ -67,10 +76,20 @@ function runRound() {
                 break;
             default:
                 alert("Erro: opção digitada não é válida.");
-        }
-        showRoundResult();
+        }       
     }
+}
+
+function runRound() {
+    round++;
+    
+    let gamerChoice = askForGamerChoice();
+    let computerChoice = parseInt(Math.random()*3 + 1);
+    console.log(`Opção do Jogador: ${gamerChoice}\nOpção do Computador: ${computerChoice}`);
+    
+    determineRoundWinner(gamerChoice, computerChoice);
+    showRoundResult();
     if(!hasWinner()) {
-        runRound()
+        runRound();
     }
 } 
