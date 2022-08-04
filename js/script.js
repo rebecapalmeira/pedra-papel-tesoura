@@ -44,7 +44,6 @@ function gamerWin() {
 
 function draw() {
     console.log(`Rodada ${round}: Empate`);
-    showRoundResult();
 }
 
 function showRoundResult() {
@@ -70,9 +69,6 @@ function determineRoundWinner(gamerChoice, computerChoice) {
             break;
             case 3:
                 computerChoice === 1 ? computerWin() : gamerWin();                  
-                break;
-            case gamerChoice === computerChoice:
-                draw();
                 break;
             default:
                 alert("Erro: opção digitada não é válida.");
